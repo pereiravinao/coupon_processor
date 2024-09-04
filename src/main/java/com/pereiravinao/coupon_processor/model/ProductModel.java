@@ -1,8 +1,9 @@
 package com.pereiravinao.coupon_processor.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class ProductModel {
+public class ProductModel implements Serializable {
 
     private Long id;
     private String name;
