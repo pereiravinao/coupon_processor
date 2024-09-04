@@ -4,5 +4,4 @@ public interface RabbitMQService {
 
     void publishMessage(String queueName, Object message);
 
-    void processMessage(String queueName, Object message);
 }

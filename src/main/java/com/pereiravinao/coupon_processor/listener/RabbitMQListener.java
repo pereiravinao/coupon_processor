@@ -1,20 +1,30 @@
 package com.pereiravinao.coupon_processor.listener;
 
-import com.pereiravinao.coupon_processor.service.RabbitMQService;
+import com.pereiravinao.coupon_processor.model.CouponModel;
+import com.pereiravinao.coupon_processor.service.CouponService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
 
 @Component
 public class RabbitMQListener {
 
-    private final RabbitMQService rabbitMQService;
+    private final CouponService couponService;
 
-    public RabbitMQListener(RabbitMQService rabbitMQService) {
-        this.rabbitMQService = rabbitMQService;
+    public RabbitMQListener(CouponService couponService) {
+        this.couponService = couponService;
     }
 
     @RabbitListener(queues = "coupon.queue")
-    public void handleMessage(Object message) {
-        rabbitMQService.processMessage("coupon.queue", message);
+    public void handleMessage(CouponModel coupon) {
+        if (coupon == null) {
+            return;
+        }
+
+        coupon.setBuyerName("Lucas Souza");
+        coupon.setBuyerBirthDate(LocalDate.parse("1994-03-29"));
+        coupon.setBuyerDocument("419.438.578.98".replace(".", "").replace("-", ""));
+        couponService.processMessage(coupon);
     }
 }
