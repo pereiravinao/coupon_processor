@@ -1,24 +1,35 @@
-version: '3.7'
+version: '3.8'
+
 services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+      - rabbitmq
+
   db:
-    image: postgres:13
+    image: postgres:14-alpine
     environment:
-      POSTGRES_DB: coupondb
+      POSTGRES_DB: coupon_db
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres1234
+      POSTGRES_PASSWORD: admin
     ports:
       - "5432:5432"
-    networks:
-      - coupon-network
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
 
   rabbitmq:
     image: rabbitmq:3-management
     ports:
       - "5672:5672"
       - "15672:15672"
-    networks:
-      - coupon-network
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
 
-networks:
-  coupon-network:
-    driver: bridge
+volumes:
+  postgres-data:
