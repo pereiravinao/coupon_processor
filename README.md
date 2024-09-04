@@ -55,7 +55,7 @@ docker-compose up --build
 Isso irá:
 - Subir o RabbitMQ na porta 5672 (painel de gerenciamento: http://localhost:15672, credenciais: guest/guest).
 - Subir o PostgreSQL na porta 5432 com o banco de dados coupondb.
-= Subir a aplicação na porta 8080.
+- Subir a aplicação na porta 8080.
 
 ### 4. Variáveis de Ambiente
 As variáveis de ambiente podem ser configuradas diretamente no docker-compose.yml ou no Dockerfile. As principais são:
