@@ -1,5 +1,6 @@
 package com.pereiravinao.coupon_processor.entity;
 
+import com.pereiravinao.coupon_processor.model.CouponModel;
 import jakarta.persistence.Column;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GenerationType;
@@ -22,7 +23,7 @@ public class CouponEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "code44", nullable = false, length = 44, unique = true)
+    @Column(name = "code44", nullable = false, length = 44)
     private String code44;
 
     @Column(name = "purchase_date", nullable = false)
@@ -50,6 +51,38 @@ public class CouponEntity {
     private String buyerDocument;
 
     public CouponEntity() {
+    }
+
+    public CouponEntity(CouponModel model) {
+        if (model != null) {
+            this.id = model.getId();
+            this.code44 = model.getCode44();
+            this.purchaseDate = model.getPurchaseDate();
+            this.totalValue = model.getTotalValue();
+            this.companyDocument = model.getCompanyDocument();
+            this.state = model.getState();
+            this.products = model.getProducts().stream().map(ProductEntity::new).toList();
+            this.buyerName = model.getBuyerName();
+            this.buyerBirthDate = model.getBuyerBirthDate();
+            this.buyerDocument = model.getBuyerDocument();
+        }
+    }
+
+    public CouponModel toModel() {
+        CouponModel model = new CouponModel();
+        model.setId(this.id);
+        model.setCode44(this.code44);
+        model.setPurchaseDate(this.purchaseDate);
+        model.setTotalValue(this.totalValue);
+        model.setCompanyDocument(this.companyDocument);
+        model.setState(this.state);
+        model.setBuyerName(this.buyerName);
+        model.setBuyerBirthDate(this.buyerBirthDate);
+        model.setBuyerDocument(this.buyerDocument);
+        if (this.products != null) {
+            model.setProducts(this.products.stream().map(ProductEntity::toModel).toList());
+        }
+        return model;
     }
 
     public Long getId() {

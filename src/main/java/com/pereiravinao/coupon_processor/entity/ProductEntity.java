@@ -1,6 +1,7 @@
 package com.pereiravinao.coupon_processor.entity;
 
 
+import com.pereiravinao.coupon_processor.model.ProductModel;
 import jakarta.persistence.Column;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
@@ -35,10 +36,28 @@ public class ProductEntity {
     private Integer quantity;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "coupon_id", nullable = false)
+    @JoinColumn(name = "coupon_id")
     private CouponEntity coupon;
 
     public ProductEntity() {
+    }
+
+    public ProductEntity(ProductModel model) {
+        if (model != null) {
+            this.name = model.getName();
+            this.ean = model.getEan();
+            this.unitaryPrice = model.getUnitaryPrice();
+            this.quantity = model.getQuantity();
+        }
+    }
+
+    public ProductModel toModel() {
+        ProductModel model = new ProductModel();
+        model.setName(this.name);
+        model.setEan(this.ean);
+        model.setUnitaryPrice(this.unitaryPrice);
+        model.setQuantity(this.quantity);
+        return model;
     }
 
     public Long getId() {
